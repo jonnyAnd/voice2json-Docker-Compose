@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+  voice2json:
+    container_name: voice2json
+    hostname: voice2json
+    image: synesthesiam/voice2json:latest
+    devices:
+      - /dev/snd:/dev/snd
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+      PULSE_SERVER: unix:/run/user/1000/pulse/native
+      PULSE_COOKIE: /home/mycroft/.config/pulse/cookie
+    volumes:
+      - './home:${HOME}'
+      - './storage:/root/.local/share/voice2json/'
+      - '/dev/shm/:/dev/shm/' ## This allows the container to store stuff in memory! Smart stuff!
+    command: --help
+    #command: --profile en-us_kaldi-zamia download-profile # Get profile
+    #command: --debug --profile en-us_kaldi-zamia train-profile # Train profile
+    #command: --profile en-us_kaldi-zamia transcribe-stream # test with transcribe-stream
